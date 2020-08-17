@@ -3,12 +3,12 @@
  */
 package com.krystianrymonlipinski;
 
+import com.krystianrymonlipinski.main_frame.MainFrame;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class AppTest {
+public class MainFrameTest {
     @Test public void testAppHasAGreeting() {
-        App classUnderTest = new App();
-        assertNotNull("app should have a greeting", classUnderTest.getGreeting());
+        MainFrame classUnderTest = new MainFrame();
     }
 }
