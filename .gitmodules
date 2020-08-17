@@ -1,0 +1,3 @@
+[submodule "international-draughts-algorithm"]
+	path = international-draughts-algorithm
+	url = https://github.com/krystian-rymon-lipinski/international-draughts-algorithm
