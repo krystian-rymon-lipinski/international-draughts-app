@@ -14,7 +14,6 @@ public class MainFrame {
 
     private static final int MAIN_FRAME_WIDTH = 1000;
     private static final int MAIN_FRAME_HEIGHT = 650;
-
     private static final int CONTROL_PANEL_WIDTH = 300;
     private static final int CONTROL_PANEL_HEIGHT = 700;
 
@@ -59,7 +58,18 @@ public class MainFrame {
                                MAIN_FRAME_HEIGHT - MARGIN_HEIGHT);
         contentPanel.setBackground(Color.orange);
 
+        JPanel boardPanel = new BoardPanel();
+        boardPanel.setBounds(0, 0, 500, 500);
 
+        JPanel controlPanel = new JPanel();
+        controlPanel.setBounds(500, 0, 350, 500);
+        controlPanel.setBackground(Color.magenta);
+
+
+
+        contentPanel.setLayout(null);
+        contentPanel.add(boardPanel);
+        contentPanel.add(controlPanel);
 
         mainFrame.getContentPane().add(topMargin);
         mainFrame.getContentPane().add(westMargin);
@@ -67,20 +77,15 @@ public class MainFrame {
         mainFrame.getContentPane().add(bottomMargin);
         mainFrame.getContentPane().add(contentPanel);
 
-        //mainFrame.getContentPane().add(createBoardPanel());
-        //mainFrame.getContentPane().add(createControlPanel());
+
 
         mainFrame.setSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT);
         mainFrame.setVisible(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //mainFrame.repaint();
+        mainFrame.repaint();
 
     }
 
-    private BoardPanel createBoardPanel() {
-        boardPanel = new BoardPanel();
-        return boardPanel;
-    }
 
     private JPanel createControlPanel() {
         controlPanel = new JPanel();
