@@ -14,18 +14,23 @@ public class MainFrame {
 
     private static final int MAIN_FRAME_WIDTH = 1000;
     private static final int MAIN_FRAME_HEIGHT = 650;
-    private static final int CONTROL_PANEL_WIDTH = 300;
-    private static final int CONTROL_PANEL_HEIGHT = 700;
+    private static final int BOARD_PANEL_WIDTH = 500;
+    private static final int BOARD_PANEL_HEIGHT = 500;
+    private static final int CONTROL_PANEL_WIDTH = 350;
+    private static final int CONTROL_PANEL_HEIGHT = 500;
 
     private static final int MARGIN_WIDTH = 75;
     private static final int MARGIN_HEIGHT = 75;
 
     JFrame mainFrame;
+    JPanel contentPanel;
     BoardPanel boardPanel;
     JPanel controlPanel;
+
     JButton newGameButton;
-    JButton makeMoveButton;
     JButton loadMoveButton;
+    JLabel radioGroupLabel;
+    JLabel bestMoveLabel;
 
     public static void main(String[] args) {
         new MainFrame().createFrame();
@@ -35,62 +40,109 @@ public class MainFrame {
     private void createFrame() {
         mainFrame = new JFrame();
         mainFrame.setLayout(null);
+        mainFrame.setSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT);
 
-        JPanel topMargin = new JPanel();
-        topMargin.setBounds(0, 0, MAIN_FRAME_WIDTH, MARGIN_HEIGHT);
-        topMargin.setBackground(Color.WHITE);
+        createContentPanel();
+        createBoardPanel();
+        createControlPanel();
 
-        JPanel westMargin = new JPanel();
-        westMargin.setBounds(0, 0, MARGIN_WIDTH, MAIN_FRAME_HEIGHT);
-        westMargin.setBackground(Color.WHITE);
-
-        JPanel eastMargin = new JPanel();
-        eastMargin.setBounds( (MAIN_FRAME_WIDTH - MARGIN_WIDTH), 0, MARGIN_WIDTH, MAIN_FRAME_HEIGHT);
-        eastMargin.setBackground(Color.WHITE);
-
-        JPanel bottomMargin = new JPanel();
-        bottomMargin.setBounds(0, (MAIN_FRAME_HEIGHT - MARGIN_HEIGHT), MAIN_FRAME_WIDTH, MARGIN_HEIGHT);
-        bottomMargin.setBackground(Color.WHITE);
-
-        JPanel contentPanel = new JPanel();
-        contentPanel.setBounds(MARGIN_WIDTH, MARGIN_HEIGHT,
-                               MAIN_FRAME_WIDTH - MARGIN_WIDTH,
-                               MAIN_FRAME_HEIGHT - MARGIN_HEIGHT);
-        contentPanel.setBackground(Color.orange);
-
-        JPanel boardPanel = new BoardPanel();
-        boardPanel.setBounds(0, 0, 500, 500);
-
-        JPanel controlPanel = new JPanel();
-        controlPanel.setBounds(500, 0, 350, 500);
-        controlPanel.setBackground(Color.magenta);
-
-
-
-        contentPanel.setLayout(null);
         contentPanel.add(boardPanel);
         contentPanel.add(controlPanel);
 
-        mainFrame.getContentPane().add(topMargin);
-        mainFrame.getContentPane().add(westMargin);
-        mainFrame.getContentPane().add(eastMargin);
-        mainFrame.getContentPane().add(bottomMargin);
+        addMarginsToFrame();
         mainFrame.getContentPane().add(contentPanel);
 
 
 
-        mainFrame.setSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT);
+
         mainFrame.setVisible(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame.repaint();
 
     }
 
+    private JPanel createTopMargin() {
+        JPanel topMargin = new JPanel();
+        topMargin.setBounds(0, 0, MAIN_FRAME_WIDTH, MARGIN_HEIGHT);
+        return topMargin;
+    }
 
-    private JPanel createControlPanel() {
+    private JPanel createWestMargin() {
+        JPanel westMargin = new JPanel();
+        westMargin.setBounds(0, 0, MARGIN_WIDTH, MAIN_FRAME_HEIGHT);
+        return westMargin;
+    }
+
+    private JPanel createEastMargin() {
+        JPanel eastMargin = new JPanel();
+        eastMargin.setBounds( (MAIN_FRAME_WIDTH - MARGIN_WIDTH), 0, MARGIN_WIDTH, MAIN_FRAME_HEIGHT);
+        return eastMargin;
+    }
+
+    private JPanel createBottomMargin() {
+        JPanel bottomMargin = new JPanel();
+        bottomMargin.setBounds(0, (MAIN_FRAME_HEIGHT - MARGIN_HEIGHT), MAIN_FRAME_WIDTH, MARGIN_HEIGHT);
+        return bottomMargin;
+    }
+
+    private void addMarginsToFrame() {
+        mainFrame.getContentPane().add(createTopMargin());
+        mainFrame.getContentPane().add(createWestMargin());
+        mainFrame.getContentPane().add(createEastMargin());
+        mainFrame.getContentPane().add(createBottomMargin());
+    }
+
+    private void createContentPanel() {
+        contentPanel = new JPanel();
+        contentPanel.setBounds(MARGIN_WIDTH, MARGIN_HEIGHT,
+                MAIN_FRAME_WIDTH - MARGIN_WIDTH,
+                MAIN_FRAME_HEIGHT - MARGIN_HEIGHT);
+        contentPanel.setLayout(null);
+    }
+
+    private void createBoardPanel() {
+        boardPanel = new BoardPanel();
+        boardPanel.setBounds(0, 0, BOARD_PANEL_WIDTH, BOARD_PANEL_HEIGHT);
+    }
+
+    private void createControlPanel() {
         controlPanel = new JPanel();
-        controlPanel.setSize(CONTROL_PANEL_WIDTH, CONTROL_PANEL_HEIGHT);
-        controlPanel.setBackground(Color.RED);
-        return controlPanel;
+        controlPanel.setBounds(BOARD_PANEL_WIDTH, 0, CONTROL_PANEL_WIDTH, CONTROL_PANEL_HEIGHT);
+        controlPanel.setLayout(null);
+
+        addControlPanelComponents();
+    }
+
+    private void addControlPanelComponents() {
+        newGameButton = new JButton("New game");
+        newGameButton.setBounds(75, 50, 200, 100);
+
+        radioGroupLabel = new JLabel("Choose color for player: ");
+        radioGroupLabel.setBounds(50, 160, 200, 50);
+
+        ButtonGroup colorsToChoose = new ButtonGroup();
+        JRadioButtonMenuItem whiteColor = new JRadioButtonMenuItem("white");
+        JRadioButtonMenuItem blackColor = new JRadioButtonMenuItem("black");
+        colorsToChoose.add(whiteColor);
+        colorsToChoose.add(blackColor);
+        whiteColor.setSelected(true);
+
+        whiteColor.setBounds(50, 200, 100, 40);
+        blackColor.setBounds(50, 240, 100, 40);
+
+        loadMoveButton = new JButton("Load move from file");
+        loadMoveButton.setBounds(75, 300, 200, 100);
+
+        bestMoveLabel = new JLabel("Best move for algorithm: ");
+        bestMoveLabel.setBounds(50, 425, 200, 50);
+
+
+
+        controlPanel.add(newGameButton);
+        controlPanel.add(radioGroupLabel);
+        controlPanel.add(whiteColor);
+        controlPanel.add(blackColor);
+        controlPanel.add(loadMoveButton);
+        controlPanel.add(bestMoveLabel);
     }
 }
