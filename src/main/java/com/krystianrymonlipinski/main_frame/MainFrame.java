@@ -3,6 +3,8 @@
  */
 package com.krystianrymonlipinski.main_frame;
 
+import draughts.library.boardmodel.Board;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -190,6 +192,16 @@ public class MainFrame implements MainFrameView {
                             DIALOG_PANEL_WIDTH, DIALOG_PANEL_HEIGHT);
 
         dialog.setVisible(true);
+
+    }
+
+    @Override
+    public void updateBoard(Board board) {
+
+    }
+
+    @Override
+    public void showBestMove(String move) {
 
     }
 }

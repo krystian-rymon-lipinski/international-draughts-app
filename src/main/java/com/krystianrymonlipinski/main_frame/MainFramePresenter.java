@@ -2,6 +2,14 @@ package com.krystianrymonlipinski.main_frame;
 
 public class MainFramePresenter {
 
+    MainFrameModel mainFrameModel;
+    MainFrameView mainFrameView;
+
+    public MainFramePresenter(MainFrameView view) {
+        mainFrameModel = new MainFrameModel();
+        mainFrameView = view;
+    }
+
     public void onNewGameButtonClicked() {
         System.out.println("START!");
     }
@@ -11,6 +19,6 @@ public class MainFramePresenter {
     }
 
     public void onLoadMoveButtonClicked() {
-        System.out.println("LOAD!");
+        mainFrameView.showIncorrectMoveDialog();
     }
 }
