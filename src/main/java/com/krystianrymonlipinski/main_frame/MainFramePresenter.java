@@ -1,5 +1,7 @@
 package com.krystianrymonlipinski.main_frame;
 
+import draughts.library.boardmodel.Tile;
+
 public class MainFramePresenter {
 
     MainFrameModel mainFrameModel;
@@ -11,7 +13,8 @@ public class MainFramePresenter {
     }
 
     public void onNewGameButtonClicked() {
-        System.out.println("START!");
+        Tile[][] board = mainFrameModel.startGame();
+        mainFrameView.updateBoard(board);
     }
 
     public void onChosenColorChanged(boolean isWhiteColorSelected) {

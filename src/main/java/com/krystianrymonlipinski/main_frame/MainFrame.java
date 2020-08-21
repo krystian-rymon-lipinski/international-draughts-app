@@ -4,6 +4,7 @@
 package com.krystianrymonlipinski.main_frame;
 
 import draughts.library.boardmodel.Board;
+import draughts.library.boardmodel.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -66,8 +67,6 @@ public class MainFrame implements MainFrameView {
 
         mainFrame.setVisible(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.repaint();
-
     }
 
     private JPanel createTopMargin() {
@@ -196,8 +195,9 @@ public class MainFrame implements MainFrameView {
     }
 
     @Override
-    public void updateBoard(Board board) {
-
+    public void updateBoard(Tile[][] board) {
+        boardPanel.setBoard(board);
+        mainFrame.repaint();
     }
 
     @Override
