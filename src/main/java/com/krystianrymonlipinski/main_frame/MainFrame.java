@@ -4,10 +4,11 @@
 package com.krystianrymonlipinski.main_frame;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainFrame {
+public class MainFrame implements MainFrameView {
 
     private static final int MAIN_FRAME_WIDTH = 1000;
     private static final int MAIN_FRAME_HEIGHT = 650;
@@ -15,6 +16,8 @@ public class MainFrame {
     private static final int BOARD_PANEL_HEIGHT = 500;
     private static final int CONTROL_PANEL_WIDTH = 350;
     private static final int CONTROL_PANEL_HEIGHT = 500;
+    private static final int DIALOG_PANEL_WIDTH = 200;
+    private static final int DIALOG_PANEL_HEIGHT = 100;
 
     private static final int MARGIN_WIDTH = 75;
     private static final int MARGIN_HEIGHT = 75;
@@ -40,7 +43,7 @@ public class MainFrame {
     }
 
     private void onCreate() {
-        mainFramePresenter = new MainFramePresenter();
+        mainFramePresenter = new MainFramePresenter(this);
         createFrame();
     }
 
@@ -153,7 +156,6 @@ public class MainFrame {
         controlPanel.add(bestMoveLabel);
     }
 
-
     public class NewGameButtonClickListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -173,5 +175,21 @@ public class MainFrame {
         public void actionPerformed(ActionEvent e) {
             mainFramePresenter.onLoadMoveButtonClicked();
         }
+    }
+
+
+    @Override
+    public void showIncorrectMoveDialog() {
+        JDialog dialog = new JDialog(mainFrame, "Wrong move!", true);
+        JLabel dialogLabel = new JLabel("Made move is not allowed!");
+        dialog.getContentPane().add(dialogLabel);
+        dialogLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        dialog.setBounds(MAIN_FRAME_WIDTH/2 - DIALOG_PANEL_WIDTH/2,
+                         MAIN_FRAME_HEIGHT/2 - DIALOG_PANEL_HEIGHT/2,
+                            DIALOG_PANEL_WIDTH, DIALOG_PANEL_HEIGHT);
+
+        dialog.setVisible(true);
+
     }
 }
