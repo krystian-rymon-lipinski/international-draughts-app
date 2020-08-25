@@ -22,6 +22,7 @@ public class MainFramePresenter {
     }
 
     public void onLoadMoveButtonClicked() {
-        mainFrameView.showIncorrectMoveDialog();
+        mainFrameModel.loadMoveMade();
+        //mainFrameView.showIncorrectMoveDialog();
     }
 }
