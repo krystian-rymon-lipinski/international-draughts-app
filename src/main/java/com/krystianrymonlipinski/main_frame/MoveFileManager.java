@@ -3,10 +3,7 @@ package com.krystianrymonlipinski.main_frame;
 import draughts.library.movemodel.Hop;
 import draughts.library.movemodel.Move;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class MoveFileManager {
 
@@ -51,5 +48,17 @@ public class MoveFileManager {
             }
         }
         return moveData;
+    }
+
+    public void writeMoveResult(boolean wasMoveLegal) {
+        String result = wasMoveLegal ? "1" : "0";
+        try {
+            FileWriter fileWriter = new FileWriter(filePath);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(result);
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
