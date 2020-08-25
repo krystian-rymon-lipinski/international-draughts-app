@@ -3,14 +3,15 @@
  */
 package com.krystianrymonlipinski.main_frame;
 
-import com.krystianrymonlipinski.algorithm.MainAlgorithm;
-import com.krystianrymonlipinski.tree.model.Tree;
-import draughts.library.managers.BoardManager;
+import draughts.library.boardmodel.Board;
+import draughts.library.boardmodel.Tile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class MainFrame {
+public class MainFrame implements MainFrameView {
 
     private static final int MAIN_FRAME_WIDTH = 1000;
     private static final int MAIN_FRAME_HEIGHT = 650;
@@ -18,9 +19,13 @@ public class MainFrame {
     private static final int BOARD_PANEL_HEIGHT = 500;
     private static final int CONTROL_PANEL_WIDTH = 350;
     private static final int CONTROL_PANEL_HEIGHT = 500;
+    private static final int DIALOG_PANEL_WIDTH = 200;
+    private static final int DIALOG_PANEL_HEIGHT = 100;
 
     private static final int MARGIN_WIDTH = 75;
     private static final int MARGIN_HEIGHT = 75;
+
+    MainFramePresenter mainFramePresenter;
 
     JFrame mainFrame;
     JPanel contentPanel;
@@ -31,10 +36,18 @@ public class MainFrame {
     JButton loadMoveButton;
     JLabel radioGroupLabel;
     JLabel bestMoveLabel;
+    ButtonGroup colorsToChoose;
+    JRadioButtonMenuItem whiteColor;
+    JRadioButtonMenuItem blackColor;
 
     public static void main(String[] args) {
-        new MainFrame().createFrame();
 
+        new MainFrame().onCreate();
+    }
+
+    private void onCreate() {
+        mainFramePresenter = new MainFramePresenter(this);
+        createFrame();
     }
 
     private void createFrame() {
@@ -52,13 +65,8 @@ public class MainFrame {
         addMarginsToFrame();
         mainFrame.getContentPane().add(contentPanel);
 
-
-
-
         mainFrame.setVisible(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.repaint();
-
     }
 
     private JPanel createTopMargin() {
@@ -116,27 +124,30 @@ public class MainFrame {
     private void addControlPanelComponents() {
         newGameButton = new JButton("New game");
         newGameButton.setBounds(75, 50, 200, 100);
+        newGameButton.addActionListener(new NewGameButtonClickListener());
 
         radioGroupLabel = new JLabel("Choose color for player: ");
         radioGroupLabel.setBounds(50, 160, 200, 50);
 
-        ButtonGroup colorsToChoose = new ButtonGroup();
-        JRadioButtonMenuItem whiteColor = new JRadioButtonMenuItem("white");
-        JRadioButtonMenuItem blackColor = new JRadioButtonMenuItem("black");
+        colorsToChoose = new ButtonGroup();
+        whiteColor = new JRadioButtonMenuItem("white");
+        blackColor = new JRadioButtonMenuItem("black");
         colorsToChoose.add(whiteColor);
         colorsToChoose.add(blackColor);
         whiteColor.setSelected(true);
+
+        whiteColor.addActionListener(new ChosenColorChangeListener());
+        blackColor.addActionListener(new ChosenColorChangeListener());
 
         whiteColor.setBounds(50, 200, 100, 40);
         blackColor.setBounds(50, 240, 100, 40);
 
         loadMoveButton = new JButton("Load move from file");
         loadMoveButton.setBounds(75, 300, 200, 100);
+        loadMoveButton.addActionListener(new LoadMoveButtonClickListener());
 
         bestMoveLabel = new JLabel("Best move for algorithm: ");
         bestMoveLabel.setBounds(50, 425, 200, 50);
-
-
 
         controlPanel.add(newGameButton);
         controlPanel.add(radioGroupLabel);
@@ -144,5 +155,53 @@ public class MainFrame {
         controlPanel.add(blackColor);
         controlPanel.add(loadMoveButton);
         controlPanel.add(bestMoveLabel);
+    }
+
+    public class NewGameButtonClickListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mainFramePresenter.onNewGameButtonClicked();
+        }
+    }
+
+    public class ChosenColorChangeListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mainFramePresenter.onChosenColorChanged(whiteColor.isSelected());
+        }
+    }
+
+    public class LoadMoveButtonClickListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            mainFramePresenter.onLoadMoveButtonClicked();
+        }
+    }
+
+
+    @Override
+    public void showIncorrectMoveDialog() {
+        JDialog dialog = new JDialog(mainFrame, "Wrong move!", true);
+        JLabel dialogLabel = new JLabel("Made move is not allowed!");
+        dialog.getContentPane().add(dialogLabel);
+        dialogLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+        dialog.setBounds(MAIN_FRAME_WIDTH/2 - DIALOG_PANEL_WIDTH/2,
+                         MAIN_FRAME_HEIGHT/2 - DIALOG_PANEL_HEIGHT/2,
+                            DIALOG_PANEL_WIDTH, DIALOG_PANEL_HEIGHT);
+
+        dialog.setVisible(true);
+
+    }
+
+    @Override
+    public void updateBoard(Tile[][] board) {
+        boardPanel.setBoard(board);
+        mainFrame.repaint();
+    }
+
+    @Override
+    public void showBestMove(String move) {
+
     }
 }

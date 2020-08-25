@@ -1,6 +1,7 @@
 package com.krystianrymonlipinski.main_frame;
 
 import draughts.library.boardmodel.Board;
+import draughts.library.boardmodel.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,29 +27,58 @@ public class BoardPanel extends JPanel {
     private int xPanelCoordinate;
     private int yPanelCoordinate;
 
+    private Tile[][] board;
+
     public BoardPanel() {
         xPanelCoordinate = 0;
         yPanelCoordinate = 0;
+
         this.setLayout(null);
+    }
+
+    public void setBoard(Tile[][] board) {
+        this.board = board;
     }
 
     public void paintComponent(Graphics panel) {
         boardPanel = (Graphics2D) panel;
-        boolean isTileWhite = true;
-
-        for (int i=0; i<10; i++) {
-            for (int j=0; j<10; j++) {
-                paintTile(isTileWhite);
-                if (i==5 && j==6) paintPiece(false, false);
-                xPanelCoordinate += TILE_WIDTH;
-                if (j<9) isTileWhite = !isTileWhite;
+        if (board != null) {
+            for (int i=0; i<board.length; i++) {
+                for (int j=0; j<board[i].length; j++) {
+                    switch (board[i][j].getState()) {
+                        case WHITE_TILE:
+                            paintTile(true, board[i][j].getIndex());
+                            break;
+                        case EMPTY:
+                            paintTile(false, board[i][j].getIndex());
+                            break;
+                        case WHITE_PAWN:
+                            paintTile(false, board[i][j].getIndex());
+                            paintPiece(true, false);
+                            break;
+                        case BLACK_PAWN:
+                            paintTile(false, board[i][j].getIndex());
+                            paintPiece(false, false);
+                            break;
+                        case WHITE_QUEEN:
+                            paintTile(false, board[i][j].getIndex());
+                            paintPiece(true, true);
+                            break;
+                        case BLACK_QUEEN:
+                            paintTile(false, board[i][j].getIndex());
+                            paintPiece(false, true);
+                            break;
+                    }
+                    xPanelCoordinate += TILE_WIDTH;
+                }
+                xPanelCoordinate = 0;
+                yPanelCoordinate += TILE_HEIGHT;
             }
-            xPanelCoordinate = 0;
-            yPanelCoordinate += TILE_HEIGHT;
         }
+
     }
 
-    private void paintTile(boolean isTileWhite) {
+    private void paintTile(boolean isTileWhite, int tileNumber) {
         if (isTileWhite) boardPanel.setColor(Color.decode(WHITE_TILE_COLOR));
         else             boardPanel.setColor(Color.decode(BLACK_TILE_COLOR));
 
@@ -56,7 +86,7 @@ public class BoardPanel extends JPanel {
 
         if (!isTileWhite) {
             boardPanel.setColor(Color.decode(TILE_NUMBER_STRING_COLOR));
-            boardPanel.drawString("12", xPanelCoordinate, yPanelCoordinate + 10);
+            boardPanel.drawString(String.valueOf(tileNumber), xPanelCoordinate, yPanelCoordinate + 10);
         }
 
 
