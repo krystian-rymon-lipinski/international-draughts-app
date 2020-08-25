@@ -10,14 +10,14 @@ import java.io.IOException;
 
 public class MoveFileManager {
 
-    private static File relativePath;
     private final static File filePath = new File("../move.txt");
 
-/*
-    public Move<? extends Hop> loadMove() {
 
+    public MoveData loadMoveData() {
+        String moveString = loadStringFromFile();
+        return parseStringToMoveData(moveString);
     }
-*/
+
     public String loadStringFromFile() {
         String moveString = "";
 
@@ -27,12 +27,29 @@ public class MoveFileManager {
 
             moveString = bufferedReader.readLine();
             bufferedReader.close();
-            System.out.println(moveString);
 
         } catch(IOException ex) {
             ex.printStackTrace();
         }
 
         return moveString;
+    }
+
+    public MoveData parseStringToMoveData(String moveString) {
+        String[] tilesStrings = moveString.split(",");
+
+        MoveData moveData = new MoveData();
+
+        moveData.setSource(Integer.parseInt(tilesStrings[0]));
+        moveData.setDestination(Integer.parseInt(tilesStrings[1]));
+
+        if (tilesStrings.length > 2) {
+            String takenPawnsStrings[] = tilesStrings[2].split("x");
+
+            for (int i=0; i<takenPawnsStrings.length; i++) {
+                moveData.addTakenPawn(Integer.parseInt(takenPawnsStrings[i]));
+            }
+        }
+        return moveData;
     }
 }

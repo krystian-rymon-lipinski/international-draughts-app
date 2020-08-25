@@ -24,6 +24,7 @@ public class MainFrameModel {
     }
 
     public void loadMoveMade() {
-        moveFileManager.loadStringFromFile();
+        MoveData moveData = moveFileManager.loadMoveData();
+        System.out.println(moveData);
     }
 }
