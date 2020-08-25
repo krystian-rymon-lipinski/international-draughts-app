@@ -1,6 +1,8 @@
 package com.krystianrymonlipinski.main_frame;
 
 import draughts.library.boardmodel.Tile;
+import draughts.library.exceptions.GameAlreadyEndedException;
+import draughts.library.exceptions.WrongMoveException;
 import draughts.library.managers.GameEngine;
 import draughts.library.movemodel.Hop;
 import draughts.library.movemodel.Move;
@@ -23,8 +25,19 @@ public class MainFrameModel {
         return gameEngine.getBoardManager().getBoard();
     }
 
-    public void loadMoveMade() {
+    public boolean isMoveLegal() {
         MoveData moveData = moveFileManager.loadMoveData();
-        System.out.println(moveData);
+        boolean isLegal;
+        try {
+            gameEngine.checkIfMoveIsCorrect(moveData.getSource(),
+                                            moveData.getDestination(),
+                                            moveData.getTakenPawns());
+            isLegal = true;
+        } catch (WrongMoveException | GameAlreadyEndedException e) {
+            e.printStackTrace();
+            isLegal = false;
+        }
+        moveFileManager.writeMoveResult(isLegal);
+        return isLegal;
     }
 }

@@ -22,7 +22,11 @@ public class MainFramePresenter {
     }
 
     public void onLoadMoveButtonClicked() {
-        mainFrameModel.loadMoveMade();
-        //mainFrameView.showIncorrectMoveDialog();
+        if (mainFrameModel.isMoveLegal()) {
+            System.out.println("Move is legal");
+        }
+        else {
+            mainFrameView.showIncorrectMoveDialog();
+        }
     }
 }
