@@ -4,6 +4,8 @@ import draughts.library.boardmodel.Tile;
 
 public class MainFramePresenter {
 
+    Tile[][] board;
+
     MainFrameModel mainFrameModel;
     MainFrameView mainFrameView;
 
@@ -13,7 +15,7 @@ public class MainFramePresenter {
     }
 
     public void onNewGameButtonClicked() {
-        Tile[][] board = mainFrameModel.startGame();
+        board = mainFrameModel.startGame();
         mainFrameView.updateBoard(board);
     }
 
@@ -23,7 +25,8 @@ public class MainFramePresenter {
 
     public void onLoadMoveButtonClicked() {
         if (mainFrameModel.isMoveLegal()) {
-            System.out.println("Move is legal");
+            board = mainFrameModel.updateBoard();
+            mainFrameView.updateBoard(board);
         }
         else {
             mainFrameView.showIncorrectMoveDialog();

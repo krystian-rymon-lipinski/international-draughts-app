@@ -1,8 +1,5 @@
 package com.krystianrymonlipinski.main_frame;
 
-import draughts.library.movemodel.Hop;
-import draughts.library.movemodel.Move;
-
 import java.io.*;
 
 public class MoveFileManager {
@@ -41,7 +38,7 @@ public class MoveFileManager {
         moveData.setDestination(Integer.parseInt(tilesStrings[1]));
 
         if (tilesStrings.length > 2) {
-            String takenPawnsStrings[] = tilesStrings[2].split("x");
+            String[] takenPawnsStrings = tilesStrings[2].split("x");
 
             for (int i=0; i<takenPawnsStrings.length; i++) {
                 moveData.addTakenPawn(Integer.parseInt(takenPawnsStrings[i]));
