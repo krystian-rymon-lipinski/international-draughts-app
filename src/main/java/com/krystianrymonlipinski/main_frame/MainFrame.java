@@ -3,11 +3,9 @@
  */
 package com.krystianrymonlipinski.main_frame;
 
-import draughts.library.boardmodel.Board;
 import draughts.library.boardmodel.Tile;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
