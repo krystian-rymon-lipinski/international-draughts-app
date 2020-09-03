@@ -11,6 +11,7 @@ public class MainFrameModel {
 
     private GameEngine gameEngine;
     private Move<? extends Hop> loadedMove;
+    private boolean isPlayerWhite;
     private int moveNumber;
 
     private MoveFileManager moveFileManager;
@@ -20,8 +21,9 @@ public class MainFrameModel {
         loadedMove = null;
     }
 
-    public Tile[][] startGame() {
+    public Tile[][] startGame(boolean isPlayerWhite) {
         moveFileManager = new MoveFileManager();
+        this.isPlayerWhite = isPlayerWhite;
 
         gameEngine.startGame();
         return gameEngine.getBoardManager().getBoard();

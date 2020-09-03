@@ -140,7 +140,7 @@ public class MainFrame implements MainFrameView {
         whiteColor.setBounds(50, 200, 100, 40);
         blackColor.setBounds(50, 240, 100, 40);
 
-        loadMoveButton = new JButton("Load move from file");
+        loadMoveButton = new JButton("Load move");
         loadMoveButton.setBounds(75, 300, 200, 100);
         loadMoveButton.addActionListener(new LoadMoveButtonClickListener());
 
@@ -158,14 +158,14 @@ public class MainFrame implements MainFrameView {
     public class NewGameButtonClickListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            mainFramePresenter.onNewGameButtonClicked();
+            mainFramePresenter.onNewGameButtonClicked(whiteColor.isSelected());
         }
     }
 
     public class ChosenColorChangeListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            mainFramePresenter.onChosenColorChanged(whiteColor.isSelected());
+            //do nothing
         }
     }
 
