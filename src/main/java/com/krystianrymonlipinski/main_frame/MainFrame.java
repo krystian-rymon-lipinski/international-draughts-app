@@ -6,6 +6,7 @@ package com.krystianrymonlipinski.main_frame;
 import draughts.library.boardmodel.Tile;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -34,6 +35,7 @@ public class MainFrame implements MainFrameView {
     JButton loadMoveButton;
     JLabel radioGroupLabel;
     JLabel bestMoveLabel;
+    JLabel bestMoveString;
     ButtonGroup colorsToChoose;
     JRadioButtonMenuItem whiteColor;
     JRadioButtonMenuItem blackColor;
@@ -145,7 +147,12 @@ public class MainFrame implements MainFrameView {
         loadMoveButton.addActionListener(new LoadMoveButtonClickListener());
 
         bestMoveLabel = new JLabel("Best move for algorithm: ");
-        bestMoveLabel.setBounds(50, 425, 200, 50);
+        bestMoveLabel.setBounds(50, 420, 400, 20);
+        bestMoveLabel.setFont(bestMoveLabel.getFont().deriveFont(15.0f));
+
+        bestMoveString = new JLabel("14 \u2192 34 (20, 30)");
+        bestMoveString.setBounds(50, 440, 400, 50);
+        bestMoveString.setFont(bestMoveString.getFont().deriveFont(25.0f));
 
         controlPanel.add(newGameButton);
         controlPanel.add(radioGroupLabel);
@@ -153,6 +160,7 @@ public class MainFrame implements MainFrameView {
         controlPanel.add(blackColor);
         controlPanel.add(loadMoveButton);
         controlPanel.add(bestMoveLabel);
+        controlPanel.add(bestMoveString);
     }
 
     public class NewGameButtonClickListener implements ActionListener {

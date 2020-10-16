@@ -19,10 +19,6 @@ public class MainFramePresenter {
         mainFrameView.updateBoard(board);
     }
 
-    public void onChosenColorChanged(boolean isWhiteColorSelected) {
-        System.out.println(isWhiteColorSelected);
-    }
-
     public void onLoadMoveButtonClicked() {
         if (mainFrameModel.isMoveLegal()) {
             board = mainFrameModel.updateBoard();

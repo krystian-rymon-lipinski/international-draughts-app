@@ -1,5 +1,6 @@
 package com.krystianrymonlipinski.main_frame;
 
+import com.krystianrymonlipinski.algorithm.MainAlgorithm;
 import draughts.library.boardmodel.Tile;
 import draughts.library.exceptions.GameAlreadyEndedException;
 import draughts.library.exceptions.WrongMoveException;
@@ -9,6 +10,9 @@ import draughts.library.movemodel.Move;
 
 public class MainFrameModel {
 
+    private static final int ALGORITHM_DEPTH = 4;
+
+    private MainAlgorithm mainAlgorithm;
     private GameEngine gameEngine;
     private Move<? extends Hop> loadedMove;
     private boolean isPlayerWhite;
@@ -51,5 +55,9 @@ public class MainFrameModel {
         gameEngine.prepareMove(gameEngine.getIsWhiteToMove());
 
         return gameEngine.getBoardManager().getBoard();
+    }
+
+    public void calculateBestMove() {
+        MainAlgorithm mainAlgorithm = new MainAlgorithm(4);
     }
 }
