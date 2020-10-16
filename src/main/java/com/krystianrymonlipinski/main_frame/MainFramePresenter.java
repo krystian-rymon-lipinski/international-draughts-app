@@ -14,13 +14,9 @@ public class MainFramePresenter {
         mainFrameView = view;
     }
 
-    public void onNewGameButtonClicked() {
-        board = mainFrameModel.startGame();
+    public void onNewGameButtonClicked(boolean isPlayerWhite) {
+        board = mainFrameModel.startGame(isPlayerWhite);
         mainFrameView.updateBoard(board);
-    }
-
-    public void onChosenColorChanged(boolean isWhiteColorSelected) {
-        System.out.println(isWhiteColorSelected);
     }
 
     public void onLoadMoveButtonClicked() {
