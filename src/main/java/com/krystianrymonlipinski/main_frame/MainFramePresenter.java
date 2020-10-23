@@ -1,6 +1,9 @@
 package com.krystianrymonlipinski.main_frame;
 
 import draughts.library.boardmodel.Tile;
+import draughts.library.movemodel.Capture;
+import draughts.library.movemodel.Hop;
+import draughts.library.movemodel.Move;
 
 public class MainFramePresenter {
 
@@ -29,5 +32,24 @@ public class MainFramePresenter {
                 mainFrameView.showIncorrectMoveDialog();
             }
         }
+
+}
+
+    public String convertBestMove(Move<? extends Hop> bestMove) {
+        StringBuilder builder = new StringBuilder();
+        String source = String.valueOf(bestMove.getMoveSource().getIndex());
+        builder.append(source).append(" \u2192 ");
+        String destination = String.valueOf(bestMove.getMoveDestination().getIndex());
+        builder.append(destination);
+        if (bestMove.isCapture()) {
+            builder.append("(");
+            for (Hop hop : bestMove.getHops()) {
+                Capture capture = (Capture) hop;
+                builder.append(capture.getTakenPiece().getPosition().getIndex()).append(" ");
+            }
+            builder.append(")");
+        }
+
+        return builder.toString();
     }
 }
