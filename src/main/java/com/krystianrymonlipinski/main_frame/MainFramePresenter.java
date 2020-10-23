@@ -26,16 +26,15 @@ public class MainFramePresenter {
         if (mainFrameModel.isMoveLegal()) {
             board = mainFrameModel.updateBoard();
             mainFrameView.updateBoard(board);
+            mainFrameModel.updateGameTree();
         }
         else {
             mainFrameView.showIncorrectMoveDialog();
         }
 
         if (mainFrameModel.isGameRunning()) {
-            if (mainFrameModel.isPlayerToMove()) {
-                mainFrameModel.findPossibleMovesForPlayer();
-            }
-            else {
+            mainFrameModel.findPossibleMoves();
+            if (!mainFrameModel.isPlayerToMove()) {
                 Move<? extends Hop> bestMove = mainFrameModel.findBestMoveForAlgorithm();
                 String bestMoveString = convertBestMove(bestMove);
                 mainFrameView.showBestMove(bestMoveString);

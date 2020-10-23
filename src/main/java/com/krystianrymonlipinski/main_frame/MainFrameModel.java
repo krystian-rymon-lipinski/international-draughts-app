@@ -1,14 +1,12 @@
 package com.krystianrymonlipinski.main_frame;
 
+import com.krystianrymonlipinski.algorithm.ChosenLevelAlreadyCalculatedException;
 import com.krystianrymonlipinski.algorithm.MainAlgorithm;
 import draughts.library.boardmodel.Tile;
-import draughts.library.exceptions.GameAlreadyEndedException;
 import draughts.library.exceptions.WrongMoveException;
 import draughts.library.managers.GameEngine;
 import draughts.library.movemodel.Hop;
 import draughts.library.movemodel.Move;
-
-import java.util.ArrayList;
 
 public class MainFrameModel {
 
@@ -70,12 +68,21 @@ public class MainFrameModel {
         return mainAlgorithm.findBestMove();
     }
 
-    public ArrayList<Move<? extends Hop>> findPossibleMovesForPlayer() {
-        return gameEngine.getMoveManager().findAllCorrectMoves(gameEngine.getBoardManager(),
+    public void findPossibleMoves() {
+        gameEngine.getMoveManager().findAllCorrectMoves(gameEngine.getBoardManager(),
                 gameEngine.getIsWhiteToMove());
     }
 
     public boolean isPlayerToMove() {
         return isPlayerWhite == gameEngine.getIsWhiteToMove();
+    }
+
+    public void updateGameTree() {
+        try {
+            mainAlgorithm.calculateNextTreeLevel(ALGORITHM_DEPTH);
+        } catch (ChosenLevelAlreadyCalculatedException ex) {
+            ex.printStackTrace();
+        }
+
     }
 }
