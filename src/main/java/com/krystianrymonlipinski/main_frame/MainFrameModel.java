@@ -37,11 +37,11 @@ public class MainFrameModel {
         MoveData moveData = moveFileManager.loadMoveData();
         boolean isLegal;
         try {
-            loadedMove = gameEngine.checkIfMoveIsCorrect(moveData.getSource(),
+            loadedMove = gameEngine.getMoveManager().convertToMove(moveData.getSource(),
                                                          moveData.getDestination(),
                                                          moveData.getTakenPawns());
             isLegal = true;
-        } catch (WrongMoveException | GameAlreadyEndedException e) {
+        } catch (WrongMoveException e) {
             e.printStackTrace();
             isLegal = false;
         }
@@ -52,9 +52,14 @@ public class MainFrameModel {
     public Tile[][] updateBoard() {
         gameEngine.getBoardManager().makeWholeMove(loadedMove);
         gameEngine.finishMove(loadedMove);
-        gameEngine.prepareMove(gameEngine.getIsWhiteToMove());
+        gameEngine.getMoveManager().findAllCorrectMoves(gameEngine.getBoardManager(),
+                gameEngine.getIsWhiteToMove());
 
         return gameEngine.getBoardManager().getBoard();
+    }
+
+    public boolean isGameRunning() {
+        return gameEngine.getGameState() == GameEngine.GameState.RUNNING;
     }
 
     public void calculateBestMove() {

@@ -20,12 +20,14 @@ public class MainFramePresenter {
     }
 
     public void onLoadMoveButtonClicked() {
-        if (mainFrameModel.isMoveLegal()) {
-            board = mainFrameModel.updateBoard();
-            mainFrameView.updateBoard(board);
-        }
-        else {
-            mainFrameView.showIncorrectMoveDialog();
+        if (mainFrameModel.isGameRunning()) {
+            if (mainFrameModel.isMoveLegal()) {
+                board = mainFrameModel.updateBoard();
+                mainFrameView.updateBoard(board);
+            }
+            else {
+                mainFrameView.showIncorrectMoveDialog();
+            }
         }
     }
 }
