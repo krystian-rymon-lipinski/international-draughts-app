@@ -23,17 +23,25 @@ public class MainFramePresenter {
     }
 
     public void onLoadMoveButtonClicked() {
-        if (mainFrameModel.isGameRunning()) {
-            if (mainFrameModel.isMoveLegal()) {
-                board = mainFrameModel.updateBoard();
-                mainFrameView.updateBoard(board);
-            }
-            else {
-                mainFrameView.showIncorrectMoveDialog();
-            }
+        if (mainFrameModel.isMoveLegal()) {
+            board = mainFrameModel.updateBoard();
+            mainFrameView.updateBoard(board);
+        }
+        else {
+            mainFrameView.showIncorrectMoveDialog();
         }
 
-}
+        if (mainFrameModel.isGameRunning()) {
+            if (mainFrameModel.isPlayerToMove()) {
+                mainFrameModel.findPossibleMovesForPlayer();
+            }
+            else {
+                Move<? extends Hop> bestMove = mainFrameModel.findBestMoveForAlgorithm();
+                String bestMoveString = convertBestMove(bestMove);
+                mainFrameView.showBestMove(bestMoveString);
+            }
+        }
+    }
 
     public String convertBestMove(Move<? extends Hop> bestMove) {
         StringBuilder builder = new StringBuilder();

@@ -8,6 +8,8 @@ import draughts.library.managers.GameEngine;
 import draughts.library.movemodel.Hop;
 import draughts.library.movemodel.Move;
 
+import java.util.ArrayList;
+
 public class MainFrameModel {
 
     private static final int ALGORITHM_DEPTH = 4;
@@ -30,6 +32,12 @@ public class MainFrameModel {
         this.isPlayerWhite = isPlayerWhite;
 
         gameEngine.startGame();
+        mainAlgorithm = new MainAlgorithm(ALGORITHM_DEPTH, gameEngine);
+        mainAlgorithm.calculateTree();
+
+        if (isPlayerToMove()) gameEngine.getMoveManager().findAllCorrectMoves(gameEngine.getBoardManager(),
+                gameEngine.getIsWhiteToMove());
+
         return gameEngine.getBoardManager().getBoard();
     }
 
@@ -50,11 +58,7 @@ public class MainFrameModel {
     }
 
     public Tile[][] updateBoard() {
-        gameEngine.getBoardManager().makeWholeMove(loadedMove);
-        gameEngine.finishMove(loadedMove);
-        gameEngine.getMoveManager().findAllCorrectMoves(gameEngine.getBoardManager(),
-                gameEngine.getIsWhiteToMove());
-
+        mainAlgorithm.updateTreeAfterMove(loadedMove);
         return gameEngine.getBoardManager().getBoard();
     }
 
@@ -62,7 +66,16 @@ public class MainFrameModel {
         return gameEngine.getGameState() == GameEngine.GameState.RUNNING;
     }
 
-    public void calculateBestMove() {
-        MainAlgorithm mainAlgorithm = new MainAlgorithm(4);
+    public Move<? extends Hop> findBestMoveForAlgorithm() {
+        return mainAlgorithm.findBestMove();
+    }
+
+    public ArrayList<Move<? extends Hop>> findPossibleMovesForPlayer() {
+        return gameEngine.getMoveManager().findAllCorrectMoves(gameEngine.getBoardManager(),
+                gameEngine.getIsWhiteToMove());
+    }
+
+    public boolean isPlayerToMove() {
+        return isPlayerWhite == gameEngine.getIsWhiteToMove();
     }
 }
