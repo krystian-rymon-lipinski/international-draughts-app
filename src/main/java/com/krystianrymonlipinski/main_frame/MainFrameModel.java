@@ -2,6 +2,8 @@ package com.krystianrymonlipinski.main_frame;
 
 import com.krystianrymonlipinski.algorithm.ChosenLevelAlreadyCalculatedException;
 import com.krystianrymonlipinski.algorithm.MainAlgorithm;
+import com.krystianrymonlipinski.algorithm.PositionState;
+import com.krystianrymonlipinski.tree.model.Node;
 import draughts.library.boardmodel.Tile;
 import draughts.library.exceptions.WrongMoveException;
 import draughts.library.managers.GameEngine;
@@ -56,7 +58,14 @@ public class MainFrameModel {
     }
 
     public Tile[][] updateBoard() {
+        for (Node<PositionState, Move<? extends Hop>> child : mainAlgorithm.getMoveTree().getCurrentNode().getChildren()) {
+            if (child.getCondition().equals(loadedMove)) {
+                loadedMove = child.getCondition();
+                break;
+            }
+        }
         mainAlgorithm.updateTreeAfterMove(loadedMove);
+        gameEngine.getBoardManager().printBoard();
         return gameEngine.getBoardManager().getBoard();
     }
 
