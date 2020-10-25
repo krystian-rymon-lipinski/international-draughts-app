@@ -64,7 +64,7 @@ public class MainFrameModel {
                 break;
             }
         }
-        mainAlgorithm.updateTreeAfterMove(loadedMove);
+        mainAlgorithm.getMoveTree().moveDown(loadedMove);
         gameEngine.getBoardManager().printBoard();
         return gameEngine.getBoardManager().getBoard();
     }
@@ -87,11 +87,7 @@ public class MainFrameModel {
     }
 
     public void updateGameTree() {
-        try {
-            mainAlgorithm.calculateNextTreeLevel(ALGORITHM_DEPTH);
-        } catch (ChosenLevelAlreadyCalculatedException ex) {
-            ex.printStackTrace();
-        }
-
+        mainAlgorithm.getMoveTree().setCurrentNodeAsRoot();
+        mainAlgorithm.calculateNextTreeLevel(ALGORITHM_DEPTH);
     }
 }

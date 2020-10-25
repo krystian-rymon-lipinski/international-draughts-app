@@ -42,7 +42,7 @@ public class MainFramePresenter {
         }
     }
 
-    public String convertBestMove(Move<? extends Hop> bestMove) {
+    private String convertBestMove(Move<? extends Hop> bestMove) {
         StringBuilder builder = new StringBuilder();
         String source = String.valueOf(bestMove.getMoveSource().getIndex());
         builder.append(source).append(" \u2192 ");
