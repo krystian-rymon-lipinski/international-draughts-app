@@ -44,12 +44,12 @@ public class MainFrame implements MainFrameView {
         new MainFrame().onCreate();
     }
 
-    private void onCreate() {
+    public void onCreate() {
         mainFramePresenter = new MainFramePresenter(this);
         createFrame();
     }
 
-    private void createFrame() {
+    public void createFrame() {
         mainFrame = new JFrame();
         mainFrame.setLayout(null);
         mainFrame.setSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT);
