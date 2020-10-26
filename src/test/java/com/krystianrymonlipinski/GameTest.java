@@ -48,5 +48,30 @@ public class GameTest {
             frame.updateBoard(gameEngine.getBoardManager().getBoard());
             sleep(1);
         }
+
+        sleep(10000);
+    }
+
+    @Test
+    public void playGame_algorithmVersusAlgorithm_bestMoves() throws InterruptedException {
+        gameEngine.startGame();
+        frame.updateBoard(gameEngine.getBoardManager().getBoard());
+
+        mainAlgorithm = new MainAlgorithm(ALGORITHM_DEPTH, gameEngine);
+        mainAlgorithm.calculateTree();
+
+        sleep(1000);
+
+        while(gameEngine.getGameState() == GameEngine.GameState.RUNNING) {
+            Move<? extends Hop> move = mainAlgorithm.findBestMove();
+
+            mainAlgorithm.getMoveTree().moveDown(move);
+            mainAlgorithm.getMoveTree().setCurrentNodeAsRoot();
+            mainAlgorithm.calculateNextTreeLevel(ALGORITHM_DEPTH);
+
+            frame.updateBoard(gameEngine.getBoardManager().getBoard());
+            sleep(10);
+        }
+
     }
 }
