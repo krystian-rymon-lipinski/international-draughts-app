@@ -35,8 +35,9 @@ public class MainFrameModel {
         mainAlgorithm = new MainAlgorithm(ALGORITHM_DEPTH, gameEngine);
         mainAlgorithm.calculateTree();
 
-        if (isPlayerToMove()) gameEngine.getMoveManager().findAllCorrectMoves(gameEngine.getBoardManager(),
+        gameEngine.getMoveManager().findAllCorrectMoves(gameEngine.getBoardManager(),
                 gameEngine.getIsWhiteToMove());
+        if (!isPlayerToMove()) findBestMoveForAlgorithm();
 
         return gameEngine.getBoardManager().getBoard();
     }

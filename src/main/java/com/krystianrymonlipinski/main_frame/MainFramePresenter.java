@@ -20,6 +20,11 @@ public class MainFramePresenter {
     public void onNewGameButtonClicked(boolean isPlayerWhite) {
         board = mainFrameModel.startGame(isPlayerWhite);
         mainFrameView.updateBoard(board);
+        if (!isPlayerWhite) {
+            Move<? extends Hop> bestMove = mainFrameModel.findBestMoveForAlgorithm();
+            mainFrameView.showBestMove(convertBestMove(bestMove));
+        }
+
     }
 
     public void onLoadMoveButtonClicked() {
