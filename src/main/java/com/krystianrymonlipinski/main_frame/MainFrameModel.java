@@ -89,6 +89,7 @@ public class MainFrameModel {
 
     public void updateGameTree() {
         mainAlgorithm.getMoveTree().setCurrentNodeAsRoot();
-        mainAlgorithm.calculateNextTreeLevel(ALGORITHM_DEPTH);
+        int levelToCalculate = ALGORITHM_DEPTH + mainAlgorithm.getMoveTree().getRoot().getLevel();
+        mainAlgorithm.calculateNextTreeLevel(levelToCalculate);
     }
 }

@@ -12,7 +12,7 @@ import static java.lang.Thread.sleep;
 
 public class GameTest {
 
-    private final static int ALGORITHM_DEPTH = 4;
+    private final static int ALGORITHM_DEPTH = 8;
     private MainAlgorithm mainAlgorithm;
     private GameEngine gameEngine;
 
@@ -43,7 +43,8 @@ public class GameTest {
 
             mainAlgorithm.getMoveTree().moveDown(move);
             mainAlgorithm.getMoveTree().setCurrentNodeAsRoot();
-            mainAlgorithm.calculateNextTreeLevel(ALGORITHM_DEPTH);
+            int levelToCalculate = ALGORITHM_DEPTH + mainAlgorithm.getMoveTree().getRoot().getLevel();
+            mainAlgorithm.calculateNextTreeLevel(levelToCalculate);
 
             frame.updateBoard(gameEngine.getBoardManager().getBoard());
             sleep(1);
@@ -57,21 +58,23 @@ public class GameTest {
         gameEngine.startGame();
         frame.updateBoard(gameEngine.getBoardManager().getBoard());
 
+        sleep(1000);
+
         mainAlgorithm = new MainAlgorithm(ALGORITHM_DEPTH, gameEngine);
         mainAlgorithm.calculateTree();
-
-        sleep(1000);
 
         while(gameEngine.getGameState() == GameEngine.GameState.RUNNING) {
             Move<? extends Hop> move = mainAlgorithm.findBestMove();
 
             mainAlgorithm.getMoveTree().moveDown(move);
             mainAlgorithm.getMoveTree().setCurrentNodeAsRoot();
-            mainAlgorithm.calculateNextTreeLevel(ALGORITHM_DEPTH);
+            int levelToCalculate = ALGORITHM_DEPTH + mainAlgorithm.getMoveTree().getRoot().getLevel();
+            mainAlgorithm.calculateNextTreeLevel(levelToCalculate);
 
             frame.updateBoard(gameEngine.getBoardManager().getBoard());
-            sleep(10);
+            sleep(20);
         }
+
 
     }
 }
