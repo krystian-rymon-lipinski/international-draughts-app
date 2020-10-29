@@ -6,7 +6,6 @@ package com.krystianrymonlipinski.main_frame;
 import draughts.library.boardmodel.Tile;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -45,12 +44,12 @@ public class MainFrame implements MainFrameView {
         new MainFrame().onCreate();
     }
 
-    private void onCreate() {
+    public void onCreate() {
         mainFramePresenter = new MainFramePresenter(this);
         createFrame();
     }
 
-    private void createFrame() {
+    public void createFrame() {
         mainFrame = new JFrame();
         mainFrame.setLayout(null);
         mainFrame.setSize(MAIN_FRAME_WIDTH, MAIN_FRAME_HEIGHT);
@@ -150,7 +149,7 @@ public class MainFrame implements MainFrameView {
         bestMoveLabel.setBounds(50, 420, 400, 20);
         bestMoveLabel.setFont(bestMoveLabel.getFont().deriveFont(15.0f));
 
-        bestMoveString = new JLabel("14 \u2192 34 (20, 30)");
+        bestMoveString = new JLabel("");
         bestMoveString.setBounds(50, 440, 400, 50);
         bestMoveString.setFont(bestMoveString.getFont().deriveFont(25.0f));
 
@@ -208,6 +207,6 @@ public class MainFrame implements MainFrameView {
 
     @Override
     public void showBestMove(String move) {
-
+        bestMoveString.setText(move);
     }
 }

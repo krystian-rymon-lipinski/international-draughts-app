@@ -4,7 +4,7 @@ import java.io.*;
 
 public class MoveFileManager {
 
-    private final static File filePath = new File("../move.txt");
+    private final static File FILE_PATH = new File("../move.txt");
 
 
     public MoveData loadMoveData() {
@@ -16,7 +16,7 @@ public class MoveFileManager {
         String moveString = "";
 
         try {
-            FileReader fileReader = new FileReader(filePath);
+            FileReader fileReader = new FileReader(FILE_PATH);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
             moveString = bufferedReader.readLine();
@@ -50,7 +50,7 @@ public class MoveFileManager {
     public void writeMoveResult(boolean wasMoveLegal) {
         String result = wasMoveLegal ? "1" : "0";
         try {
-            FileWriter fileWriter = new FileWriter(filePath);
+            FileWriter fileWriter = new FileWriter(FILE_PATH);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(result);
             bufferedWriter.close();

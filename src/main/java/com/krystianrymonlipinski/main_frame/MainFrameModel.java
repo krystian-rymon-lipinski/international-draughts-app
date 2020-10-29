@@ -1,8 +1,10 @@
 package com.krystianrymonlipinski.main_frame;
 
+import com.krystianrymonlipinski.algorithm.ChosenLevelAlreadyCalculatedException;
 import com.krystianrymonlipinski.algorithm.MainAlgorithm;
+import com.krystianrymonlipinski.algorithm.PositionState;
+import com.krystianrymonlipinski.tree.model.Node;
 import draughts.library.boardmodel.Tile;
-import draughts.library.exceptions.GameAlreadyEndedException;
 import draughts.library.exceptions.WrongMoveException;
 import draughts.library.managers.GameEngine;
 import draughts.library.movemodel.Hop;
@@ -30,6 +32,13 @@ public class MainFrameModel {
         this.isPlayerWhite = isPlayerWhite;
 
         gameEngine.startGame();
+        mainAlgorithm = new MainAlgorithm(ALGORITHM_DEPTH, gameEngine);
+        mainAlgorithm.calculateTree();
+
+        gameEngine.getMoveManager().findAllCorrectMoves(gameEngine.getBoardManager(),
+                gameEngine.getIsWhiteToMove());
+        if (!isPlayerToMove()) findBestMoveForAlgorithm();
+
         return gameEngine.getBoardManager().getBoard();
     }
 
@@ -37,11 +46,11 @@ public class MainFrameModel {
         MoveData moveData = moveFileManager.loadMoveData();
         boolean isLegal;
         try {
-            loadedMove = gameEngine.checkIfMoveIsCorrect(moveData.getSource(),
+            loadedMove = gameEngine.getMoveManager().convertToMove(moveData.getSource(),
                                                          moveData.getDestination(),
                                                          moveData.getTakenPawns());
             isLegal = true;
-        } catch (WrongMoveException | GameAlreadyEndedException e) {
+        } catch (WrongMoveException e) {
             e.printStackTrace();
             isLegal = false;
         }
@@ -50,14 +59,37 @@ public class MainFrameModel {
     }
 
     public Tile[][] updateBoard() {
-        gameEngine.getBoardManager().makeWholeMove(loadedMove);
-        gameEngine.finishMove(loadedMove);
-        gameEngine.prepareMove(gameEngine.getIsWhiteToMove());
-
+        for (Node<PositionState, Move<? extends Hop>> child : mainAlgorithm.getMoveTree().getCurrentNode().getChildren()) {
+            if (child.getCondition().equals(loadedMove)) {
+                loadedMove = child.getCondition();
+                break;
+            }
+        }
+        mainAlgorithm.getMoveTree().moveDown(loadedMove);
+        gameEngine.getBoardManager().printBoard();
         return gameEngine.getBoardManager().getBoard();
     }
 
-    public void calculateBestMove() {
-        MainAlgorithm mainAlgorithm = new MainAlgorithm(4);
+    public boolean isGameRunning() {
+        return gameEngine.getGameState() == GameEngine.GameState.RUNNING;
+    }
+
+    public Move<? extends Hop> findBestMoveForAlgorithm() {
+        return mainAlgorithm.findBestMove();
+    }
+
+    public void findPossibleMoves() {
+        gameEngine.getMoveManager().findAllCorrectMoves(gameEngine.getBoardManager(),
+                gameEngine.getIsWhiteToMove());
+    }
+
+    public boolean isPlayerToMove() {
+        return isPlayerWhite == gameEngine.getIsWhiteToMove();
+    }
+
+    public void updateGameTree() {
+        mainAlgorithm.getMoveTree().setCurrentNodeAsRoot();
+        int levelToCalculate = ALGORITHM_DEPTH + mainAlgorithm.getMoveTree().getRoot().getLevel();
+        mainAlgorithm.calculateNextTreeLevel(levelToCalculate);
     }
 }
