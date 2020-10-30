@@ -1,8 +1,7 @@
 package com.krystianrymonlipinski.main_frame;
 
-import com.krystianrymonlipinski.algorithm.ChosenLevelAlreadyCalculatedException;
-import com.krystianrymonlipinski.algorithm.MainAlgorithm;
-import com.krystianrymonlipinski.algorithm.PositionState;
+import com.krystianrymonlipinski.algorithm.playingalgorithm.MainAlgorithm;
+import com.krystianrymonlipinski.algorithm.playingalgorithm.PositionState;
 import com.krystianrymonlipinski.tree.model.Node;
 import draughts.library.boardmodel.Tile;
 import draughts.library.exceptions.WrongMoveException;

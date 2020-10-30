@@ -1,6 +1,6 @@
 package com.krystianrymonlipinski;
 
-import com.krystianrymonlipinski.algorithm.MainAlgorithm;
+import com.krystianrymonlipinski.algorithm.playingalgorithm.MainAlgorithm;
 import com.krystianrymonlipinski.main_frame.MainFrame;
 import draughts.library.managers.GameEngine;
 import draughts.library.movemodel.Hop;
@@ -12,7 +12,7 @@ import static java.lang.Thread.sleep;
 
 public class GameTest {
 
-    private final static int ALGORITHM_DEPTH = 8;
+    private final static int ALGORITHM_DEPTH = 6;
     private MainAlgorithm mainAlgorithm;
     private GameEngine gameEngine;
 
