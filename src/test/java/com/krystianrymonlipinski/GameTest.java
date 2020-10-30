@@ -1,5 +1,6 @@
 package com.krystianrymonlipinski;
 
+import com.krystianrymonlipinski.algorithm.geneticalgorithm.Specimen;
 import com.krystianrymonlipinski.algorithm.playingalgorithm.MainAlgorithm;
 import com.krystianrymonlipinski.main_frame.MainFrame;
 import draughts.library.managers.GameEngine;
@@ -12,7 +13,7 @@ import static java.lang.Thread.sleep;
 
 public class GameTest {
 
-    private final static int ALGORITHM_DEPTH = 6;
+    private final static int ALGORITHM_DEPTH = 4;
     private MainAlgorithm mainAlgorithm;
     private GameEngine gameEngine;
 
@@ -32,7 +33,7 @@ public class GameTest {
         frame.updateBoard(gameEngine.getBoardManager().getBoard());
 
         mainAlgorithm = new MainAlgorithm(ALGORITHM_DEPTH, gameEngine);
-        mainAlgorithm.calculateTree();
+        mainAlgorithm.calculateTree(null);
 
         sleep(1000);
 
@@ -44,13 +45,13 @@ public class GameTest {
             mainAlgorithm.getMoveTree().moveDown(move);
             mainAlgorithm.getMoveTree().setCurrentNodeAsRoot();
             int levelToCalculate = ALGORITHM_DEPTH + mainAlgorithm.getMoveTree().getRoot().getLevel();
-            mainAlgorithm.calculateNextTreeLevel(levelToCalculate);
+            mainAlgorithm.calculateNextTreeLevel(levelToCalculate, null);
 
             frame.updateBoard(gameEngine.getBoardManager().getBoard());
-            sleep(1);
+            sleep(20);
         }
 
-        sleep(10000);
+        sleep(1000);
     }
 
     @Test
@@ -61,7 +62,7 @@ public class GameTest {
         sleep(1000);
 
         mainAlgorithm = new MainAlgorithm(ALGORITHM_DEPTH, gameEngine);
-        mainAlgorithm.calculateTree();
+        mainAlgorithm.calculateTree(null);
 
         while(gameEngine.getGameState() == GameEngine.GameState.RUNNING) {
             Move<? extends Hop> move = mainAlgorithm.findBestMove();
@@ -69,12 +70,43 @@ public class GameTest {
             mainAlgorithm.getMoveTree().moveDown(move);
             mainAlgorithm.getMoveTree().setCurrentNodeAsRoot();
             int levelToCalculate = ALGORITHM_DEPTH + mainAlgorithm.getMoveTree().getRoot().getLevel();
-            mainAlgorithm.calculateNextTreeLevel(levelToCalculate);
+            mainAlgorithm.calculateNextTreeLevel(levelToCalculate, null);
 
             frame.updateBoard(gameEngine.getBoardManager().getBoard());
             sleep(20);
         }
+    }
 
+    @Test
+    public void playGame_algorithmVersusAlgorithm_bestMoves_withWeights() throws InterruptedException {
+        Specimen first = new Specimen(200);
+        Specimen second = new Specimen(300);
 
+        GameEngine gameEngine = new GameEngine();
+        gameEngine.startGame();
+        frame.updateBoard(gameEngine.getBoardManager().getBoard());
+
+        boolean firstToMove = true;
+
+        MainAlgorithm mainAlgorithm = new MainAlgorithm(ALGORITHM_DEPTH, gameEngine);
+        mainAlgorithm.calculateTree(first);
+
+        while(gameEngine.getGameState() == GameEngine.GameState.RUNNING) {
+            Move<? extends Hop> move = mainAlgorithm.findBestMove();
+
+            mainAlgorithm.getMoveTree().moveDown(move);
+            mainAlgorithm.getMoveTree().setCurrentNodeAsRoot();
+
+            firstToMove = !firstToMove;
+            int levelToCalculate = ALGORITHM_DEPTH + mainAlgorithm.getMoveTree().getRoot().getLevel();
+            if (firstToMove) {
+                mainAlgorithm.calculateNextTreeLevel(levelToCalculate, first);
+            } else {
+                mainAlgorithm.calculateNextTreeLevel(levelToCalculate, second);
+            }
+
+            frame.updateBoard(gameEngine.getBoardManager().getBoard());
+            sleep(40);
+        }
     }
 }

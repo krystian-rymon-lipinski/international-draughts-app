@@ -32,7 +32,7 @@ public class MainFrameModel {
 
         gameEngine.startGame();
         mainAlgorithm = new MainAlgorithm(ALGORITHM_DEPTH, gameEngine);
-        mainAlgorithm.calculateTree();
+        mainAlgorithm.calculateTree(null);
 
         gameEngine.getMoveManager().findAllCorrectMoves(gameEngine.getBoardManager(),
                 gameEngine.getIsWhiteToMove());
@@ -89,6 +89,6 @@ public class MainFrameModel {
     public void updateGameTree() {
         mainAlgorithm.getMoveTree().setCurrentNodeAsRoot();
         int levelToCalculate = ALGORITHM_DEPTH + mainAlgorithm.getMoveTree().getRoot().getLevel();
-        mainAlgorithm.calculateNextTreeLevel(levelToCalculate);
+        mainAlgorithm.calculateNextTreeLevel(levelToCalculate, null);
     }
 }
