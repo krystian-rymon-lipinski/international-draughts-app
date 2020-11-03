@@ -186,8 +186,8 @@ public class MainFrame implements MainFrameView {
 
     @Override
     public void showIncorrectMoveDialog() {
-        JDialog dialog = new JDialog(mainFrame, "Wrong move!", true);
-        JLabel dialogLabel = new JLabel("Made move is not allowed!");
+        JDialog dialog = new JDialog(mainFrame, "Error!", true);
+        JLabel dialogLabel = new JLabel("This move is not allowed!");
         dialog.getContentPane().add(dialogLabel);
         dialogLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
